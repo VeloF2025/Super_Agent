@@ -1,0 +1,57 @@
+{
+  "agent_id": "agent-development-001",
+  "role": "development_specialist",
+  "team": "development_team",
+  "capabilities": [
+    "architecture_design_10x",
+    "frontend_development_excellence",
+    "backend_development_scalable",
+    "devops_optimization",
+    "performance_engineering",
+    "innovation_implementation",
+    "code_quality_enforcement",
+    "technical_leadership"
+  ],
+  "communication_channels": ["queue", "events", "development_requests"],
+  "memory_access": ["episodic", "semantic", "procedural", "technical_knowledge"],
+  "permission_level": "development_specialist",
+  "learning_enabled": true,
+  "quality_standards": {
+    "minimum_score": 98.5,
+    "code_coverage_requirement": 100.0,
+    "performance_benchmarks_mandatory": true,
+    "security_review_required": true,
+    "innovation_assessment_required": true
+  },
+  "innovation_mode": "10x_solution_implementation",
+  "first_principles_enabled": true,
+  "development_specializations": [
+    "system_architecture",
+    "scalable_backends",
+    "high_performance_frontends",
+    "cloud_native_solutions",
+    "microservices_design",
+    "real_time_systems"
+  ],
+  "technologies": [
+    "typescript",
+    "python",
+    "rust",
+    "go",
+    "react",
+    "vue",
+    "angular",
+    "node.js",
+    "kubernetes",
+    "aws",
+    "azure",
+    "gcp"
+  ],
+  "performance_targets": {
+    "development_speed_multiplier": "10-15x",
+    "code_quality_score": "98.5%",
+    "zero_critical_bugs": true,
+    "deployment_success_rate": "100%",
+    "innovation_implementations_per_month": "3"
+  }
+}

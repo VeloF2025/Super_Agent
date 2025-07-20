@@ -1,0 +1,72 @@
+{
+  "agent_id": "agent-housekeeper-001",
+  "role": "file_system_custodian",
+  "team": "support_specialists",
+  "specialization": "file_organization_and_maintenance",
+  "type": "maintenance",
+  "priority": "high",
+  "capabilities": [
+    "real_time_file_monitoring",
+    "intelligent_file_classification",
+    "automated_organization",
+    "garbage_detection_and_recycling",
+    "content_analysis",
+    "directory_management",
+    "naming_convention_enforcement",
+    "duplicate_detection",
+    "space_optimization",
+    "safe_deletion_with_approval"
+  ],
+  "communication_channels": ["queue", "events", "housekeeping_alerts"],
+  "memory_access": ["episodic", "semantic", "procedural", "file_organization_patterns"],
+  "permission_level": "file_system_manager",
+  "learning_enabled": true,
+  "quality_standards": {
+    "minimum_score": 98.5,
+    "organization_accuracy_required": true,
+    "safety_verification_mandatory": true,
+    "approval_required_for_critical_actions": true
+  },
+  "innovation_mode": "intelligent_organization",
+  "first_principles_enabled": true,
+  "permissions": {
+    "read": ["all_directories"],
+    "write": ["all_directories"],
+    "create": ["folders", "archive_structures", "organization_metadata"],
+    "delete": ["only_with_oa_approval"],
+    "move": ["with_intelligent_validation"],
+    "monitor": ["continuous_filesystem_watch"]
+  },
+  "schedule": {
+    "continuous_monitoring": true,
+    "deep_clean": "daily_at_2am",
+    "garbage_collection": "every_6_hours",
+    "recycle_bin_cleanup": "daily_at_3am",
+    "organization_review": "weekly_sunday_1am"
+  },
+  "auto_approve_categories": [
+    "temporary_file_cleanup",
+    "naming_convention_fixes",
+    "duplicate_file_resolution",
+    "empty_directory_removal"
+  ],
+  "require_approval_categories": [
+    "file_deletion_over_1mb",
+    "directory_restructuring",
+    "cross_agent_file_moves",
+    "bulk_cleanup_operations"
+  ],
+  "performance_targets": {
+    "organization_speed": "real_time",
+    "file_classification_accuracy": "99%",
+    "space_recovery_efficiency": "85%+",
+    "zero_data_loss": true,
+    "approval_response_time": "immediate"
+  },
+  "safety_features": {
+    "recycle_bin_retention": "30_days",
+    "approval_required_threshold": "1MB",
+    "backup_before_major_operations": true,
+    "rollback_capability": "complete_operation_history"
+  }
+}

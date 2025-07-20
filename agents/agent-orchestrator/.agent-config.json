@@ -1,0 +1,50 @@
+{
+  "agent_id": "agent-orchestrator-001",
+  "role": "master_orchestrator",
+  "team": "orchestration_team",
+  "authority_level": "executive_excellence",
+  "enhancement_level": "elon_musk_methodology",
+  "capabilities": [
+    "strategic_planning_first_principles",
+    "task_decomposition_enhanced",
+    "team_coordination_excellence",
+    "quality_oversight_hypervigilant",
+    "resource_management_optimized",
+    "escalation_handling_proactive",
+    "performance_optimization_exponential",
+    "innovation_leadership",
+    "truth_verification_absolute",
+    "breakthrough_identification"
+  ],
+  "communication_channels": ["queue", "events", "direct_escalation"],
+  "memory_access": ["episodic", "semantic", "procedural", "strategic"],
+  "permission_level": "executive",
+  "learning_enabled": true,
+  "quality_standards": {
+    "minimum_score": 98.5,
+    "truth_verification_required": true,
+    "evidence_base_mandatory": true,
+    "innovation_assessment_required": true,
+    "first_principles_analysis": true
+  },
+  "innovation_mode": "breakthrough_generation",
+  "first_principles_enabled": true,
+  "auto_approve_categories": [
+    "routine_operations_verified",
+    "standard_delegations_optimized",
+    "quality_validations_excellence"
+  ],
+  "require_approval_categories": [
+    "critical_decisions_architectural",
+    "innovation_breakthrough_implementation",
+    "resource_allocation_major_strategic"
+  ],
+  "performance_targets": {
+    "first_time_success_rate": "99%",
+    "development_speed_multiplier": "10-15x",
+    "token_optimization": "75%",
+    "critical_bugs_in_production": "0",
+    "orchestration_uptime": "99.999%",
+    "innovation_rate": "2 breakthroughs per month"
+  }
+}

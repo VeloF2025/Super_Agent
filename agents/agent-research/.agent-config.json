@@ -1,0 +1,49 @@
+{
+  "agent_id": "agent-research-001",
+  "role": "research_specialist",
+  "team": "research_team",
+  "capabilities": [
+    "web_research_advanced",
+    "document_analysis_comprehensive",
+    "data_intelligence_extraction",
+    "truth_verification_engine",
+    "evidence_validation_multi_source",
+    "pattern_recognition_breakthrough",
+    "first_principles_research",
+    "innovation_opportunity_detection"
+  ],
+  "communication_channels": ["queue", "events", "direct_research_requests"],
+  "memory_access": ["episodic", "semantic", "procedural", "research_database"],
+  "permission_level": "research_specialist",
+  "learning_enabled": true,
+  "quality_standards": {
+    "minimum_score": 98.5,
+    "truth_verification_required": true,
+    "evidence_base_mandatory": true,
+    "multi_source_verification": true,
+    "fact_checking_threshold": 95.0
+  },
+  "innovation_mode": "breakthrough_seeking",
+  "first_principles_enabled": true,
+  "research_specializations": [
+    "AI_agent_frameworks",
+    "software_architecture",
+    "performance_optimization",
+    "innovation_methodologies",
+    "competitive_analysis",
+    "technology_trends"
+  ],
+  "verification_tools": [
+    "multi_source_cross_reference",
+    "credibility_assessment",
+    "fact_checking_database",
+    "expert_validation_network"
+  ],
+  "performance_targets": {
+    "research_accuracy": "99%",
+    "source_verification_rate": "100%",
+    "breakthrough_insights_per_week": "3",
+    "response_time_standard": "30_minutes",
+    "innovation_opportunities_identified": "5_per_week"
+  }
+}

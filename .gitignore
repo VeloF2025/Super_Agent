@@ -1,0 +1,76 @@
+# Super Agent Team Repository - Security and Privacy Protection
+
+# CRITICAL SECURITY EXCLUSIONS
+# Projects directory contains sensitive project data and client information
+projects/
+
+# Logs may contain sensitive operational data
+logs/
+*.log
+
+# Security credentials and configurations
+security/credentials/
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Temporary and cache files
+*.tmp
+*.temp
+*.cache
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment and configuration files
+.env
+.env.local
+.env.development
+.env.production
+config.local.json
+
+# Recycle bin contents
+recycle-bin/
+
+# Backup files
+*.bak
+*.backup
+
+# Agent-specific temporary data
+agents/*/temp/
+agents/*/cache/
+
+# Communication queue sensitive data
+shared/communication/queue/
+shared/communication/state/locks/
+
+# Memory files that may contain sensitive data
+shared/memory/temporary/
+shared/memory/persistent/episodic/
+
+# Performance metrics that may reveal operational patterns
+metrics/analytics/
+metrics/reports/
+
+# Documentation dumps with potentially sensitive information
+doc-dump/suggestions-archive/
+
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Node.js dependencies (if any)
+node_modules/
+npm-debug.log
+yarn-error.log
