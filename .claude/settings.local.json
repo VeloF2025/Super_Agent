@@ -12,7 +12,16 @@
       "Bash(python:*)",
       "Bash(powershell:*)",
       "Bash(npm start)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(git add:*)",
+      "Bash(curl:*)",
+      "Bash(find:*)",
+      "Bash(start-orchestrator.bat)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(pip install:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(true)"
     ],
     "deny": []
   }

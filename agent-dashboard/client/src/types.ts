@@ -15,11 +15,14 @@ export interface Activity {
   id: string | number
   agent_id: string
   agent_name?: string
+  agentName?: string // Alias for compatibility
   activity_type: string
+  type?: string // Alias for compatibility
   description: string
   status: 'in_progress' | 'completed' | 'failed'
   priority: 'low' | 'medium' | 'high' | 'critical'
   started_at: string
+  timestamp?: string // Alias for compatibility
   completed_at?: string
   duration_ms?: number
   result?: string

@@ -14,14 +14,17 @@ The Jarvis Super Agent System is a comprehensive multi-agent AI orchestration pl
 
 ### Key Features
 
+- **🚀 5-Minute Setup** - From download to running AI agents in minutes
 - **🤖 Multi-Agent Orchestration** - Coordinated team of specialized AI agents
-- **🌅 Automated Daily Routines** - Morning standups and evening shutdowns
+- **🧠 ML Optimization** - Continuous learning and improvement
+- **🎯 Interactive Onboarding** - Built-in wizard for new users
+- **🏥 Self-Healing System** - Automatic issue detection and fixing
 - **📊 Real-Time Monitoring** - Comprehensive dashboard with live updates
-- **🔄 Perfect Continuity** - Zero context loss between sessions
-- **📁 Intelligent File Management** - Automated organization and cleanup
-- **🎯 Context Engineering** - Rapid project initialization and takeover
+- **🔄 Perfect Continuity** - Zero context loss with crash recovery
+- **📁 Project Templates** - Pre-configured templates for quick starts
+- **🌅 Automated Daily Routines** - Morning standups and evening shutdowns
 - **🛡️ Enterprise Security** - Secure credential management and audit trails
-- **📈 Performance Analytics** - Detailed metrics and reporting
+- **📈 Performance Analytics** - ML-powered insights and agent evolution
 
 ## 🏗️ System Architecture
 
@@ -55,16 +58,42 @@ graph TB
     D --> CP[Communication Panel]
 ```
 
-## 🚀 Quick Start
+## 🚀 Quick Start - Get Running in 60 Seconds!
 
-### Prerequisites
+### One-Command Setup (NEW!)
 
-- **Python 3.8+** with pip
-- **Node.js 18+** with npm
-- **Git** for version control
-- **Windows/Linux/macOS** (tested on Windows 11)
+```bash
+# Option 1: Interactive Setup Wizard (Recommended)
+python setup.py
 
-### Installation
+# Option 2: Quick Start Script
+./quickstart.sh     # Mac/Linux
+quickstart.bat      # Windows
+
+# Option 3: Docker (Cleanest)
+docker-compose up
+```
+
+That's it! The setup wizard will:
+- ✅ Check all prerequisites automatically
+- ✅ Install missing components
+- ✅ Create your configuration
+- ✅ Set up your first project
+- ✅ Start all services
+- ✅ Open the dashboard in your browser
+
+### What You Get
+
+After setup completes, you'll have:
+- 🤖 **5 AI Agents** ready and online
+- 🎨 **Beautiful Dashboard** at http://localhost:3000
+- 📁 **First Project** already created
+- 🧠 **ML Optimization** learning from day one
+- 🎯 **Onboarding Wizard** to guide you
+
+### Manual Setup (Advanced Users)
+
+If you prefer manual setup:
 
 1. **Clone the repository:**
    ```bash
@@ -72,7 +101,12 @@ graph TB
    cd jarvis-super-agent
    ```
 
-2. **Start the complete system:**
+2. **Run the setup wizard:**
+   ```bash
+   python setup.py
+   ```
+
+3. **Or use traditional startup:**
    ```bash
    # Windows
    daily-ops\start-daily-ops.bat
@@ -80,18 +114,6 @@ graph TB
    # Linux/macOS
    ./daily-ops/start-daily-ops.sh
    ```
-
-3. **Access the dashboard:**
-   - Open http://localhost:3000
-   - Monitor real-time agent activity
-   - View project progress and metrics
-
-### First Project Setup
-
-1. **Drop project requirements** into `context-inbox/new-projects/`
-2. **Let Jarvis process** and initialize agents automatically
-3. **Monitor progress** via the dashboard
-4. **Agents work autonomously** with daily coordination
 
 ## 📋 Core Components
 
@@ -140,9 +162,27 @@ graph TB
 - **Performance Optimization** - Resource monitoring
 - **Security Maintenance** - Credential and log management
 
-## 🎯 Context Engineering
+## 🎯 Context Engineering & Project Creation
 
-### New Project Initialization
+### Quick Project Creation (NEW!)
+
+Use our project template system for instant setup:
+
+```bash
+# Interactive project creation
+python project_templates.py create
+
+# Or specify type directly
+python project_templates.py create --type web_app
+```
+
+Available templates:
+- **web_app** - Full-stack web application with React/Vue + Express/FastAPI
+- **api** - REST API with authentication and documentation
+- **data_analysis** - Data pipeline with ML capabilities
+- **automation** - Workflow automation and scheduling
+
+### Traditional Project Initialization
 
 1. **Drop requirements** into `context-inbox/new-projects/`
 2. **Automatic processing** extracts project information
@@ -212,13 +252,45 @@ Super Agent/
 }
 ```
 
+## 🧠 ML Optimization & Learning
+
+The system continuously learns and improves through:
+
+### Performance Tracking
+- **Agent Scoring** - Real-time performance metrics with ML analysis
+- **Evolution Tracking** - Monitor how agents improve over time
+- **Pattern Recognition** - Identify successful strategies automatically
+
+### Collaborative Learning
+- **Team Discovery** - Find optimal agent combinations
+- **Knowledge Transfer** - Share insights between agents
+- **Success Patterns** - Learn from completed tasks
+
+### Access ML Insights
+- Open dashboard and click "ML Optimization" tab
+- View agent rankings and performance trends
+- See collaboration network visualization
+- Track improvement over time
+
+### API Endpoints
+```bash
+# Check ML optimization status
+curl http://localhost:8000/api/jarvis/ml-optimization/status
+
+# Get agent performance scores
+curl http://localhost:8000/api/jarvis/ml-optimization/agent-performance
+
+# Trigger learning cycle
+curl -X POST http://localhost:8000/api/jarvis/ml-optimization/trigger-learning-cycle
+```
+
 ## 📊 Performance Metrics
 
-- **Agent Efficiency** - Tasks completed per hour
-- **Collaboration Score** - Inter-agent communication quality
-- **Project Velocity** - Workflow completion rates
-- **System Health** - Resource utilization and uptime
-- **Code Quality** - Test coverage and error rates
+- **Agent Efficiency** - ML-tracked tasks completed per hour
+- **Collaboration Score** - Inter-agent teamwork quality
+- **Learning Rate** - Improvement velocity over time
+- **Success Patterns** - Identified winning strategies
+- **System Health** - Auto-monitored with health checks
 
 ## 🛡️ Security Features
 
@@ -260,6 +332,41 @@ Super Agent/
 - Resource usage patterns
 - Cost optimization opportunities
 
+## 🚨 Troubleshooting & Health
+
+### Automatic Health Checks
+
+The system includes self-healing capabilities:
+
+```bash
+# Run health check with auto-fix
+python health_check.py
+
+# Check without fixing
+python health_check.py --no-fix
+
+# Generate detailed report
+python health_check.py --report
+```
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| **Setup fails** | Run `python health_check.py` to auto-fix |
+| **Agents offline** | Check logs in `logs/` directory |
+| **Port conflicts** | Change ports in `.env` file |
+| **Missing API keys** | Add to `.env` or skip during setup |
+
+### Integration Testing
+
+Verify your system is working correctly:
+
+```bash
+# Run full integration test suite
+python test_integration.py
+```
+
 ## 🤝 Contributing
 
 1. **Fork the repository**
@@ -274,6 +381,7 @@ Super Agent/
 - Add tests for new functionality
 - Update documentation for changes
 - Ensure all agents pass health checks
+- Run `python test_integration.py` before submitting
 
 ## 📜 License
 
@@ -281,9 +389,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
+- **Quick Start Guide**: See [README_QUICKSTART.md](README_QUICKSTART.md)
+- **Full User Guide**: See [COMPLETE_USER_GUIDE.md](COMPLETE_USER_GUIDE.md)
 - **Documentation**: [Full documentation](docs/)
 - **Issues**: [GitHub Issues](https://github.com/yourusername/jarvis-super-agent/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/yourusername/jarvis-super-agent/discussions)
+- **Discord**: Join our community for real-time help
 
 ## 🙏 Acknowledgments
 

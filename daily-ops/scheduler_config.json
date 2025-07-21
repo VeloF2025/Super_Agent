@@ -1,0 +1,8 @@
+{
+  "morning_standup_time": "09:00",
+  "evening_shutdown_time": "18:00",
+  "midday_check_time": "13:00",
+  "weekend_mode": false,
+  "auto_housekeeper": true,
+  "notifications_enabled": true
+}

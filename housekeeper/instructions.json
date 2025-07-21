@@ -1,45 +1,63 @@
 [
   {
     "id": "20250721_071425",
-    "timestamp": "2025-07-21T07:14:25.393104",
+    "timestamp": "2025-07-21T13:09:24.344169",
     "command": "archive_folder",
     "params": {
       "source": "suggestions/incoming",
       "target": "suggestions/processed"
     },
-    "status": "pending",
-    "priority": "normal"
+    "status": "completed",
+    "priority": "normal",
+    "archived_files": {
+      "archived_count": 1,
+      "files": [
+        "suggestions\\incoming\\agent-standup-shutdown.md"
+      ]
+    }
   },
   {
     "id": "20250721_074338",
-    "timestamp": "2025-07-21T07:43:38.377393",
+    "timestamp": "2025-07-21T13:09:24.347178",
     "command": "cleanup_folder",
     "params": {
       "path": "context-inbox/processed",
       "retention_days": 3
     },
-    "status": "pending",
-    "priority": "normal"
+    "status": "completed",
+    "priority": "normal",
+    "cleaned_files": {
+      "cleaned_count": 0,
+      "files": []
+    }
   },
   {
     "id": "20250721_074847",
-    "timestamp": "2025-07-21T07:48:47.516211",
+    "timestamp": "2025-07-21T13:09:24.349180",
     "command": "start_service",
     "params": {
       "priority": "high"
     },
-    "status": "pending",
-    "priority": "high"
+    "status": "completed",
+    "priority": "high",
+    "service_start": {
+      "error": "Failed to start service: Traceback (most recent call last):\n  File \"C:\\Jarvis\\AI Workspace\\Super Agent\\housekeeper\\start-service.py\", line 43, in start_housekeeper\n    print(f\"\\u2705 Housekeeper service started (PID: {process.pid})\")\n  File \"C:\\Users\\HeinvanVuuren\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u2705' in position 0: character maps to <undefined>\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Jarvis\\AI Workspace\\Super Agent\\housekeeper\\start-service.py\", line 59, in <module>\n    result = start_housekeeper()\n             ^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Jarvis\\AI Workspace\\Super Agent\\housekeeper\\start-service.py\", line 55, in start_housekeeper\n    print(f\"\\u274c Error starting housekeeper: {e}\")\n  File \"C:\\Users\\HeinvanVuuren\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\encodings\\cp1252.py\", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeEncodeError: 'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>\n",
+      "returncode": 1
+    }
   },
   {
     "id": "20250721_075825",
-    "timestamp": "2025-07-21T07:58:25.081138",
+    "timestamp": "2025-07-21T13:09:25.642339",
     "command": "archive_folder",
     "params": {
       "source": "suggestions/incoming",
       "target": "suggestions/processed"
     },
-    "status": "pending",
-    "priority": "normal"
+    "status": "completed",
+    "priority": "normal",
+    "archived_files": {
+      "archived_count": 0,
+      "files": []
+    }
   }
 ]
