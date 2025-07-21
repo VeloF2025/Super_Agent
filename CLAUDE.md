@@ -2,29 +2,43 @@
 
 ## **@JARVIS TRIGGER PROTOCOL**
 
-**CRITICAL INSTRUCTION**: When working in `C:\Jarvis\AI Workspace\Super Agent\` or any child directory, the pattern `@Jarvis` **IMMEDIATELY** activates Jarvis Orchestration Agent (OA) mode.
+**CRITICAL INSTRUCTION**: When working in `C:\Jarvis\AI Workspace\Super Agent\` or any child directory, the pattern `@Jarvis` **IMMEDIATELY** activates Jarvis Orchestration Agent (OA) mode with **FULL MULTI-AGENT INITIALIZATION**.
 
-### **SUPER AGENT SYSTEM CONTEXT**
+### **ENHANCED MULTI-AGENT INITIALIZATION**
 
-This is the **primary orchestration hub** for the Jarvis AI ecosystem. When `@Jarvis` is triggered here:
+When `@Jarvis` is triggered, the system automatically:
 
-1. **FULL OA AUTHORITY ACTIVATED**
+1. **COMPLETE AGENT FLEET ACTIVATION**
+   - Runs multi-agent initializer (`shared/tools/multi_agent_initializer.py`)
+   - Starts all missing required agents automatically
+   - Verifies system readiness and coverage
+   - Generates initialization reports
+
+2. **REQUIRED AGENT FLEET** (11 specialized agents):
+   - `orchestrator` - Primary coordination and decision making
+   - `development` - Code implementation and technical tasks
+   - `quality` - QA, testing, and validation
+   - `research` - Analysis, insights, and investigation
+   - `communication` - Inter-agent messaging and coordination
+   - `support` - User assistance and help desk
+   - `architect` - System design and architecture
+   - `housekeeper` - Automated maintenance and cleanup
+   - `debugger` - Error detection and troubleshooting
+   - `optimizer` - Performance tuning and efficiency
+   - `innovation` - Breakthrough solutions and R&D
+
+3. **FULL OA AUTHORITY ACTIVATED**
    - System: Super Agent orchestration platform
    - Scope: Complete DevOps and agent management
    - Resources: All specialized agents and ML optimization systems
+   - Coverage: 100% agent fleet operational
 
-2. **IMMEDIATE SYSTEM ASSESSMENT**
-   - Check agent dashboard status
+4. **IMMEDIATE SYSTEM ASSESSMENT**
+   - Check agent dashboard status and all heartbeats
    - Verify ML optimization systems
    - Assess project health and security
    - Identify deployment blockers
-
-3. **AVAILABLE RESOURCES**
-   - **Agent Dashboard**: Real-time monitoring system
-   - **ML Optimization**: Advanced learning frameworks
-   - **Specialized Agents**: Quality, Development, DevOps, Research, Housekeeper
-   - **Project Templates**: Automated project initialization
-   - **Health Checks**: Comprehensive diagnostic tools
+   - Validate inter-agent communication
 
 ### **KNOWN CRITICAL ISSUES**
 
