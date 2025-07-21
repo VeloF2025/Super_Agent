@@ -58,7 +58,7 @@ tenacity==8.2.3
 
 # Dashboard Dependencies (Python side)
 flask-cors==4.0.0
-flask-socketio==5.3.5
+flask-socketio==5.5.1
 python-socketio==5.10.0
 
 # Security
