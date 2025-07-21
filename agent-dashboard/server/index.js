@@ -9,6 +9,7 @@ import { FileSystemWatcher } from './services/fileSystemWatcher.js';
 import { DatabaseService } from './services/database.js';
 import { MetricsCollector } from './services/metricsCollector.js';
 import { HeartbeatMonitor } from './services/heartbeatMonitor.js';
+import { JarvisService } from './services/jarvis.js';
 import apiRoutes from './routes/api.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +24,7 @@ const agentMonitor = new AgentMonitor(db);
 const fileWatcher = new FileSystemWatcher(agentMonitor);
 const metricsCollector = new MetricsCollector(db, agentMonitor);
 const heartbeatMonitor = new HeartbeatMonitor(agentMonitor);
+const jarvisService = new JarvisService(db);
 
 // Middleware
 app.use(cors());
@@ -34,7 +36,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // API routes
-app.use('/api', apiRoutes(agentMonitor, db, metricsCollector));
+app.use('/api', apiRoutes(agentMonitor, db, metricsCollector, jarvisService));
 
 // Create HTTP server
 const server = app.listen(PORT, () => {
@@ -66,7 +68,8 @@ wss.on('connection', (ws, req) => {
         agents: agentMonitor.getAgents(),
         activities: agentMonitor.getRecentActivities(),
         metrics: metricsCollector.getCurrentMetrics(),
-        projects: agentMonitor.getProjects()
+        projects: agentMonitor.getProjects(),
+        jarvis: jarvisService.getSystemStatus()
       }
     };
     ws.send(JSON.stringify(initialData));
@@ -74,6 +77,26 @@ wss.on('connection', (ws, req) => {
   } catch (error) {
     console.error('Error sending initial data:', error);
   }
+
+  // Handle messages from client
+  ws.on('message', (message) => {
+    try {
+      const data = JSON.parse(message);
+      
+      // Check if it's a Jarvis query
+      if (data.type === 'jarvis-query' && data.message) {
+        if (jarvisService.isJarvisQuery(data.message)) {
+          const response = jarvisService.getJarvisResponse();
+          ws.send(JSON.stringify({
+            type: 'jarvis-response',
+            data: response
+          }));
+        }
+      }
+    } catch (error) {
+      console.error('WebSocket message error:', error);
+    }
+  });
 
   ws.on('error', (error) => {
     console.error('WebSocket error:', error);
@@ -102,9 +125,19 @@ fileWatcher.startWatching();
 metricsCollector.startCollecting();
 heartbeatMonitor.initialize();
 
+// Set up Jarvis event listeners
+jarvisService.on('initialized', (data) => {
+  broadcast({ type: 'jarvis-initialized', data });
+});
+
+jarvisService.on('shutdown', () => {
+  broadcast({ type: 'jarvis-shutdown', data: { message: 'Jarvis is shutting down' } });
+});
+
 // Graceful shutdown
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
   console.log('Shutting down gracefully...');
+  await jarvisService.shutdown();
   fileWatcher.stopWatching();
   metricsCollector.stopCollecting();
   db.close();

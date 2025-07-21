@@ -21,6 +21,7 @@ import { DatabaseService } from './services/database.js';
 import { MetricsCollector } from './services/metricsCollector.js';
 import { HeartbeatMonitor } from './services/heartbeatMonitor.js';
 import { AuthService } from './services/auth.js';
+import { JarvisService } from './services/jarvis.js';
 
 // Import middleware and routes
 import SecurityMiddleware from './middleware/security.js';
@@ -44,6 +45,7 @@ const agentMonitor = new AgentMonitor(db);
 const fileWatcher = new FileSystemWatcher(agentMonitor);
 const metricsCollector = new MetricsCollector(db, agentMonitor);
 const heartbeatMonitor = new HeartbeatMonitor(agentMonitor);
+const jarvisService = new JarvisService(db);
 
 // Apply security middleware
 app.use(helmet(securityMiddleware.helmetOptions));
@@ -83,7 +85,7 @@ app.use('/api/auth', authRoutes(authService, securityMiddleware));
 // Protected API routes
 app.use('/api', 
   securityMiddleware.authenticate,
-  apiRoutes(agentMonitor, db, metricsCollector)
+  apiRoutes(agentMonitor, db, metricsCollector, jarvisService)
 );
 
 // Error handling middleware

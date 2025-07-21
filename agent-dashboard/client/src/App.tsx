@@ -7,6 +7,7 @@ import AgentDetails from './components/AgentDetails'
 import CommunicationPanel from './components/CommunicationPanel'
 import ProjectsView from './components/ProjectsView'
 import { MLOptimizationPanel } from './components/MLOptimizationPanel'
+import { OnboardingWizard } from './components/OnboardingWizard'
 import useWebSocket from './hooks/useWebSocket'
 import { DashboardData, Agent } from './types'
 
@@ -172,6 +173,9 @@ function App() {
           </AnimatePresence>
         </main>
       </div>
+      
+      {/* Onboarding Wizard for new users */}
+      <OnboardingWizard />
     </div>
   )
 }

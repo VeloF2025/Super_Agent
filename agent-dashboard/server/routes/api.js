@@ -1,7 +1,43 @@
 import express from 'express';
 
-export default function createApiRoutes(agentMonitor, db, metricsCollector) {
+export default function createApiRoutes(agentMonitor, db, metricsCollector, jarvisService) {
   const router = express.Router();
+
+  // Jarvis identity confirmation endpoint
+  router.get('/jarvis', (req, res) => {
+    const response = jarvisService.getJarvisResponse();
+    res.json(response);
+  });
+
+  // Jarvis query endpoint - for checking if message is asking for Jarvis
+  router.post('/jarvis/query', (req, res) => {
+    const { message } = req.body;
+    
+    if (jarvisService.isJarvisQuery(message)) {
+      const response = jarvisService.getJarvisResponse();
+      res.json({
+        isJarvisQuery: true,
+        response: response
+      });
+    } else {
+      res.json({
+        isJarvisQuery: false
+      });
+    }
+  });
+
+  // Jarvis command endpoint
+  router.post('/jarvis/command', async (req, res) => {
+    const { command, context } = req.body;
+    const result = await jarvisService.handleCommand(command, context);
+    res.json(result);
+  });
+
+  // Jarvis system status
+  router.get('/jarvis/status', (req, res) => {
+    const status = jarvisService.getSystemStatus();
+    res.json(status);
+  });
 
   // Dashboard overview
   router.get('/dashboard', async (req, res) => {
@@ -25,7 +61,8 @@ export default function createApiRoutes(agentMonitor, db, metricsCollector) {
         metrics,
         projects,
         communications,
-        performance
+        performance,
+        orchestrator: jarvisService.getSystemStatus() // Include Jarvis status
       });
     } catch (error) {
       console.error('Dashboard API error:', error);
@@ -113,7 +150,8 @@ export default function createApiRoutes(agentMonitor, db, metricsCollector) {
     res.json({ 
       status: 'healthy', 
       timestamp: new Date(),
-      uptime: process.uptime()
+      uptime: process.uptime(),
+      jarvis: jarvisService.isInitialized ? 'operational' : 'initializing'
     });
   });
 
