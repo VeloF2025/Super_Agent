@@ -1,0 +1,141 @@
+{
+  "report_id": "SYS-STATUS-20250721-142200",
+  "generated_at": "2025-07-21T14:22:00.000Z",
+  "generated_by": "jarvis-auto-acceptance",
+  "system_overview": {
+    "status": "OPERATIONAL",
+    "health_score": 95,
+    "active_agents": 11,
+    "concurrent_operations": true,
+    "auto_acceptance_enabled": true
+  },
+  "resource_utilization": {
+    "cpu": {
+      "usage_percent": 22.1,
+      "status": "optimal",
+      "threshold": 90
+    },
+    "memory": {
+      "usage_percent": 77.4,
+      "available_gb": 7.11,
+      "status": "normal",
+      "threshold": 85
+    },
+    "disk": {
+      "usage_percent": 35.2,
+      "status": "healthy",
+      "threshold": 90
+    },
+    "process_count": 534
+  },
+  "agent_fleet": {
+    "total_agents": 11,
+    "active_agents": 11,
+    "agent_details": {
+      "orchestrator": {
+        "id": "agent-orchestrator-001",
+        "pid": 21380,
+        "status": "active",
+        "role": "coordination"
+      },
+      "architect": {
+        "id": "agent-architect-001",
+        "pid": 44820,
+        "status": "active",
+        "heartbeat": "healthy"
+      },
+      "development": {
+        "id": "agent-development-001",
+        "pid": 12260,
+        "status": "active",
+        "heartbeat": "healthy"
+      },
+      "quality": {
+        "id": "agent-quality-001",
+        "pid": 22316,
+        "status": "active",
+        "heartbeat": "healthy"
+      },
+      "communication": {
+        "id": "agent-communication-001",
+        "pid": 34532,
+        "status": "active",
+        "heartbeat": "healthy"
+      },
+      "research": {
+        "id": "agent-research-001",
+        "pid": 38668,
+        "status": "active",
+        "heartbeat": "healthy"
+      },
+      "support": {
+        "id": "agent-support-001",
+        "pid": 37148,
+        "status": "active",
+        "heartbeat": "healthy"
+      },
+      "housekeeper": {
+        "id": "agent-housekeeper-001",
+        "pid": 42640,
+        "status": "active",
+        "heartbeat": "healthy",
+        "schedule": "6-hour maintenance cycle"
+      },
+      "debugger": {
+        "id": "agent-debugger-001",
+        "pid": 38728,
+        "status": "active",
+        "heartbeat": "healthy"
+      },
+      "innovation": {
+        "id": "agent-innovation-001",
+        "pid": 37636,
+        "status": "active",
+        "heartbeat": "healthy"
+      },
+      "optimizer": {
+        "id": "agent-optimizer-001",
+        "pid": 30028,
+        "status": "active",
+        "heartbeat": "healthy"
+      }
+    }
+  },
+  "auto_acceptance_status": {
+    "system": "active",
+    "confidence_threshold": 0.8,
+    "operations_completed": 3,
+    "success_rate": 100,
+    "decision_log": [
+      {
+        "operation": "HEALTH_CHECK",
+        "result": "success",
+        "confidence": 0.9
+      },
+      {
+        "operation": "LOG_ANALYSIS",
+        "result": "success",
+        "confidence": 0.85
+      },
+      {
+        "operation": "REPORT_GENERATION",
+        "result": "pending",
+        "confidence": 0.8
+      }
+    ]
+  },
+  "system_capabilities": {
+    "concurrent_orchestration": true,
+    "message_queue": "active",
+    "event_driven_architecture": true,
+    "thread_pools": "available",
+    "state_management": "operational",
+    "safety_monitors": "active"
+  },
+  "recommendations": [
+    "All systems operating within normal parameters",
+    "Agent fleet fully deployed and healthy",
+    "Auto-acceptance building confidence through successful operations",
+    "Consider increasing workload based on available resources"
+  ]
+}

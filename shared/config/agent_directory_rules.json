@@ -1,0 +1,130 @@
+{
+  "agent-orchestrator": {
+    "allowed_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent",
+      "C:\\Jarvis\\memory\\context",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\shared"
+    ],
+    "restricted_paths": [
+      "C:\\Windows",
+      "C:\\Program Files",
+      "C:\\Users\\*\\AppData\\Roaming"
+    ],
+    "require_confirmation": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\config",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\projects\\*\\config"
+    ],
+    "read_only_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\.git",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\node_modules"
+    ]
+  },
+  "agent-architect": {
+    "allowed_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\projects",
+      "C:\\Jarvis\\memory\\context\\jarvis"
+    ],
+    "restricted_paths": [
+      "C:\\Windows",
+      "C:\\Program Files"
+    ],
+    "require_confirmation": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\shared\\core",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\system"
+    ],
+    "read_only_paths": []
+  },
+  "agent-development": {
+    "allowed_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\projects",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\shared\\tools",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\tests"
+    ],
+    "restricted_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\config",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\.env"
+    ],
+    "require_confirmation": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\shared\\config"
+    ],
+    "read_only_paths": []
+  },
+  "agent-housekeeper": {
+    "allowed_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\logs",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\temp",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\cache",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\shared\\heartbeats"
+    ],
+    "restricted_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\src",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\core"
+    ],
+    "require_confirmation": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\backups"
+    ],
+    "read_only_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\projects"
+    ]
+  },
+  "agent-quality": {
+    "allowed_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\tests",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\reports"
+    ],
+    "restricted_paths": [],
+    "require_confirmation": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\config"
+    ],
+    "read_only_paths": []
+  },
+  "agent-communication": {
+    "allowed_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\logs",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\shared\\messages",
+      "C:\\Jarvis\\memory\\context"
+    ],
+    "restricted_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\config",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\.env"
+    ],
+    "require_confirmation": [],
+    "read_only_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\shared\\config"
+    ]
+  },
+  "agent-monitoring": {
+    "allowed_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\shared\\heartbeats",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\logs",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\metrics"
+    ],
+    "restricted_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\config"
+    ],
+    "require_confirmation": [],
+    "read_only_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\projects"
+    ]
+  },
+  "agent-*": {
+    "allowed_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent",
+      "C:\\Jarvis\\memory\\context"
+    ],
+    "restricted_paths": [
+      "C:\\Windows",
+      "C:\\Program Files",
+      "C:\\System32"
+    ],
+    "require_confirmation": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\config",
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\.git"
+    ],
+    "read_only_paths": [
+      "C:\\Jarvis\\AI Workspace\\Super Agent\\node_modules"
+    ]
+  }
+}
