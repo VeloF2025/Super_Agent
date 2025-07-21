@@ -6,47 +6,51 @@
 ```bash
 curl -sSL https://get.jarvis.ai | bash
 ```
-*This single command downloads, installs, and starts everything!*
+*This single command downloads, installs, and starts everything including auto-acceptance system!*
 
 ### Option 2: Quick Local Setup
 ```bash
-git clone https://github.com/yourusername/jarvis-super-agent
-cd jarvis-super-agent
-chmod +x quickstart.sh
-./quickstart.sh
+git clone https://github.com/VeloF2025/Super_Agent.git
+cd Super_Agent
+python shared/tools/multi_agent_initializer.py
 ```
 
-### Option 3: Docker (Cleanest)
+### Option 3: Dashboard Setup
 ```bash
-git clone https://github.com/yourusername/jarvis-super-agent
-cd jarvis-super-agent
-docker-compose up
+cd agent-dashboard
+npm install && npm start
 ```
 
-That's it! Jarvis is now running at http://localhost:3000 🎉
+That's it! Jarvis dashboard is now running at http://localhost:3010 🎉
 
 ---
 
 ## 🎯 What Just Happened?
 
 You now have:
-- ✅ **5 AI Agents** ready to work for you
-- ✅ **Beautiful Dashboard** to control everything  
-- ✅ **ML Optimization** learning and improving
-- ✅ **Your First Project** already created
+- ✅ **11 AI Agents** active and coordinated
+- ✅ **Real-Time Dashboard** at http://localhost:3010
+- ✅ **Auto-Acceptance System** making intelligent decisions
+- ✅ **Smart Housekeeper** organizing your files automatically
 
 ## 🎮 Your First 5 Minutes
 
 ### 1. Open the Dashboard
-Go to http://localhost:3000 - it should open automatically
+Go to http://localhost:3010 - monitor all agents in real-time
 
-### 2. See Your AI Agents
-Click on "Agents" in the sidebar to see your team:
-- 🧠 **Orchestrator** - The team leader
-- 🏗️ **Architect** - System designer
-- 🔬 **Researcher** - Information gatherer
-- ✅ **Quality** - Code reviewer
-- 📢 **Communicator** - Status reporter
+### 2. See Your AI Agent Fleet
+Check the full 11-agent team:
+- 🎯 **Orchestrator (Jarvis)** - System coordinator & auto-acceptance
+- 💻 **Development** - Code implementation 
+- 🔍 **Quality** - Testing & validation
+- 🔬 **Research** - Analysis & investigation
+- 📡 **Communication** - Inter-agent messaging
+- 🛟 **Support** - User assistance
+- 🏗️ **Architect** - System design
+- 🏠 **Housekeeper** - File organization & cleanup
+- 🐛 **Debugger** - Error detection
+- ⚡ **Optimizer** - Performance tuning
+- 🚀 **Innovation** - R&D and breakthroughs
 
 ### 3. Create Your First Task
 1. Click "Dashboard"

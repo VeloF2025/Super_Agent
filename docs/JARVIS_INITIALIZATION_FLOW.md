@@ -18,6 +18,16 @@ python "C:\Jarvis\AI Workspace\Super Agent\shared\tools\multi_agent_initializer.
 This starts all 11 required agents:
 - ✅ orchestrator (PID: 21380)
 - ✅ development (PID: 12260/27888)
+- ✅ quality, research, communication, support
+- ✅ architect, housekeeper, debugger, optimizer, innovation
+
+### 3. **Auto-Acceptance System Initialization**
+```bash
+python jarvis_auto_acceptance.py --start-service
+```
+- Initializes intelligent automation system
+- Sets up decision database and confidence thresholds
+- Enables routine operation automation
 - ✅ quality (PID: 22316)
 - ✅ research (PID: 38668)
 - ✅ communication (PID: 34532)
