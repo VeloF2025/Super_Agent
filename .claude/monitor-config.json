@@ -1,0 +1,7 @@
+{
+  "check_interval": 30,
+  "max_restart_attempts": 5,
+  "restart_cooldown": 300,
+  "last_restart_time": 1753079599.679067,
+  "restart_count": 5
+}

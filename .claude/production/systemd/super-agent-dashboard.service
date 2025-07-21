@@ -1,0 +1,57 @@
+# SystemD service file for Super Agent Dashboard (Linux deployment)
+[Unit]
+Description=Super Agent Dashboard Server
+Documentation=https://github.com/yourusername/super-agent-system
+After=network.target
+Wants=network.target
+
+[Service]
+Type=exec
+User=superagent
+Group=superagent
+WorkingDirectory=/opt/super-agent
+
+# Use the robust server
+ExecStart=/usr/bin/node agent-dashboard/server/index-robust.js
+ExecReload=/bin/kill -USR2 $MAINPID
+
+# Restart configuration
+Restart=always
+RestartSec=5
+StartLimitInterval=60s
+StartLimitBurst=3
+
+# Resource limits
+MemoryMax=1G
+CPUQuota=50%
+TasksMax=100
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/super-agent/data /opt/super-agent/logs /opt/super-agent/shared
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+
+# Environment
+Environment=NODE_ENV=production
+Environment=PORT=3001
+Environment=DATABASE_PATH=/opt/super-agent/data/dashboard.db
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=super-agent-dashboard
+
+# Process management
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

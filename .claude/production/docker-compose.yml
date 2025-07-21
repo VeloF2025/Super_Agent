@@ -1,0 +1,158 @@
+services:
+  # Main Dashboard Application
+  dashboard:
+    build:
+      context: ../../
+      dockerfile: .claude/production/Dockerfile
+    container_name: super-agent-dashboard
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DATABASE_PATH=/app/data/dashboard.db
+    ports:
+      - "3001:3001"
+    volumes:
+      - dashboard_data:/app/data
+      - dashboard_logs:/app/logs
+      - shared_data:/app/shared
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - super-agent-network
+    depends_on:
+      - redis
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    container_name: super-agent-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - super-agent-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.25'
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: super-agent-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - nginx_logs:/var/log/nginx
+      - dashboard_static:/var/www/super-agent/static:ro
+    depends_on:
+      - dashboard
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - super-agent-network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.1'
+
+  # Log aggregation and monitoring
+  promtail:
+    image: grafana/promtail:latest
+    container_name: super-agent-promtail
+    restart: unless-stopped
+    volumes:
+      - /var/log:/var/log:ro
+      - dashboard_logs:/var/log/dashboard:ro
+      - nginx_logs:/var/log/nginx:ro
+      - ./promtail-config.yml:/etc/promtail/config.yml:ro
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - super-agent-network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.1'
+
+  # Health monitoring
+  watchtower:
+    image: containrrr/watchtower
+    container_name: super-agent-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=3600
+      - WATCHTOWER_INCLUDE_STOPPED=true
+      - WATCHTOWER_REVIVE_STOPPED=false
+    networks:
+      - super-agent-network
+
+volumes:
+  dashboard_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: C:\Jarvis\AI Workspace\Super Agent\data
+  
+  dashboard_logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: C:\Jarvis\AI Workspace\Super Agent\logs
+  
+  shared_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: C:\Jarvis\AI Workspace\Super Agent\shared
+  
+  dashboard_static:
+    driver: local
+  
+  redis_data:
+    driver: local
+  
+  nginx_logs:
+    driver: local
+
+networks:
+  super-agent-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

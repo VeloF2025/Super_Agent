@@ -1,0 +1,33 @@
+{
+  "retention_days": 7,
+  "auto_cleanup_interval_hours": 6,
+  "cleanup_targets": [
+    {
+      "path": "context-inbox/processed",
+      "retention_days": 7,
+      "archive_to": "context-inbox/archive"
+    },
+    {
+      "path": "suggestions/incoming",
+      "retention_days": 1,
+      "archive_to": "suggestions/processed"
+    },
+    {
+      "path": "temp",
+      "retention_days": 1,
+      "delete_after": true
+    },
+    {
+      "path": "logs",
+      "retention_days": 30,
+      "compress_after": 7
+    }
+  ],
+  "watch_patterns": [
+    "*.tmp",
+    "*.temp",
+    "*-processing.json",
+    "*.log.old"
+  ],
+  "auto_enabled": true
+}

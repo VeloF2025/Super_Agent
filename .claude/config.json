@@ -1,0 +1,70 @@
+{
+  "version": "2.0",
+  "workspace": {
+    "name": "Super Agent System",
+    "type": "multi-agent-orchestration",
+    "public": true
+  },
+  "hierarchy": {
+    "levels": [
+      {
+        "name": "root",
+        "path": "../../CLAUDE.md",
+        "scope": "workspace-wide"
+      },
+      {
+        "name": "super-agent",
+        "path": "./contexts/base.md",
+        "scope": "agent-system"
+      },
+      {
+        "name": "agent",
+        "path": "{agent}/CLAUDE.md",
+        "scope": "agent-specific"
+      },
+      {
+        "name": "project",
+        "path": "projects/{project}/CLAUDE.md",
+        "scope": "project-specific"
+      }
+    ]
+  },
+  "agents": {
+    "orchestrator": {
+      "type": "master",
+      "public_id": "orchestrator",
+      "capabilities": ["coordination", "planning", "delegation"]
+    },
+    "development": {
+      "type": "specialist",
+      "public_id": "developer",
+      "capabilities": ["coding", "testing", "optimization"]
+    },
+    "research": {
+      "type": "specialist", 
+      "public_id": "researcher",
+      "capabilities": ["analysis", "documentation", "learning"]
+    },
+    "quality": {
+      "type": "specialist",
+      "public_id": "qa",
+      "capabilities": ["testing", "validation", "standards"]
+    },
+    "architect": {
+      "type": "specialist",
+      "public_id": "architect",
+      "capabilities": ["design", "patterns", "systems"]
+    }
+  },
+  "standards": {
+    "quality_threshold": 0.985,
+    "response_time_ms": 1000,
+    "context_length_max": 8000,
+    "learning_cycle_hours": 6
+  },
+  "privacy": {
+    "sanitize_paths": true,
+    "mask_ids": true,
+    "exclude_metrics": false
+  }
+}

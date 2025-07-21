@@ -1,0 +1,11 @@
+{
+  "auto_update_before_commit": true,
+  "generate_api_docs": true,
+  "update_agent_docs": true,
+  "create_changelog": true,
+  "update_readme": true,
+  "scan_for_todos": true,
+  "generate_metrics": true,
+  "last_update": "2025-07-21T08:19:47.812757",
+  "docs_version": "1.0.0"
+}

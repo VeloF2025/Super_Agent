@@ -1,0 +1,28 @@
+{
+  "comment": "Copy this to config.local.json and update with your settings",
+  "instance": {
+    "id": "your-instance-id",
+    "environment": "development",
+    "workspace_root": "C:/your/path/here"
+  },
+  "agents": {
+    "orchestrator": {
+      "instance_id": "agent-orchestrator-001-dev",
+      "working_directory": "./agents/agent-orchestrator"
+    }
+  },
+  "api_keys": {
+    "openai": "sk-...",
+    "anthropic": "sk-ant-..."
+  },
+  "development": {
+    "debug": true,
+    "log_level": "debug",
+    "cache_enabled": true,
+    "hot_reload": true
+  },
+  "overrides": {
+    "quality_threshold": 0.95,
+    "response_time_ms": 5000
+  }
+}

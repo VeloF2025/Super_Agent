@@ -16,8 +16,17 @@
     "truth_verification_absolute",
     "breakthrough_identification"
   ],
-  "communication_channels": ["queue", "events", "direct_escalation"],
-  "memory_access": ["episodic", "semantic", "procedural", "strategic"],
+  "communication_channels": [
+    "queue",
+    "events",
+    "direct_escalation"
+  ],
+  "memory_access": [
+    "episodic",
+    "semantic",
+    "procedural",
+    "strategic"
+  ],
   "permission_level": "executive",
   "learning_enabled": true,
   "quality_standards": {
@@ -46,5 +55,15 @@
     "critical_bugs_in_production": "0",
     "orchestration_uptime": "99.999%",
     "innovation_rate": "2 breakthroughs per month"
-  }
+  },
+  "claude_integration": {
+    "context_management": "claude-v2",
+    "config_location": ".claude/config.local.json",
+    "heartbeat_enabled": true,
+    "heartbeat_interval": 30
+  },
+  "last_registered": "2025-07-21T06:08:22.357442",
+  "agent_name": "orchestrator",
+  "heartbeat_enabled": true,
+  "context_management": "claude-v2"
 }

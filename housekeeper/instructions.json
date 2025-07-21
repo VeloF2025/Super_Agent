@@ -1,0 +1,45 @@
+[
+  {
+    "id": "20250721_071425",
+    "timestamp": "2025-07-21T07:14:25.393104",
+    "command": "archive_folder",
+    "params": {
+      "source": "suggestions/incoming",
+      "target": "suggestions/processed"
+    },
+    "status": "pending",
+    "priority": "normal"
+  },
+  {
+    "id": "20250721_074338",
+    "timestamp": "2025-07-21T07:43:38.377393",
+    "command": "cleanup_folder",
+    "params": {
+      "path": "context-inbox/processed",
+      "retention_days": 3
+    },
+    "status": "pending",
+    "priority": "normal"
+  },
+  {
+    "id": "20250721_074847",
+    "timestamp": "2025-07-21T07:48:47.516211",
+    "command": "start_service",
+    "params": {
+      "priority": "high"
+    },
+    "status": "pending",
+    "priority": "high"
+  },
+  {
+    "id": "20250721_075825",
+    "timestamp": "2025-07-21T07:58:25.081138",
+    "command": "archive_folder",
+    "params": {
+      "source": "suggestions/incoming",
+      "target": "suggestions/processed"
+    },
+    "status": "pending",
+    "priority": "normal"
+  }
+]
