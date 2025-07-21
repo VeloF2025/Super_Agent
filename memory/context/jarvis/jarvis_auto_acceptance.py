@@ -97,8 +97,13 @@ class OperationPattern:
 class JarvisAutoAcceptance:
     """Main auto-acceptance system with confidence building"""
     
-    def __init__(self, db_path: str = "./memory/context/jarvis/auto_acceptance.db"):
-        self.db_path = db_path
+    def __init__(self, db_path: str = None):
+        if db_path is None:
+            self.data_dir = os.path.join(os.path.dirname(__file__), "data")
+            os.makedirs(self.data_dir, exist_ok=True)
+            self.db_path = os.path.join(self.data_dir, "auto_acceptance.db")
+        else:
+            self.db_path = db_path
         self.confidence_threshold = 0.8  # Start conservative
         self.emergency_stop = False
         self.learning_enabled = True
@@ -798,20 +803,34 @@ class JarvisAutoAcceptance:
         }
 
 
-# Example usage and integration
+# Service mode and initialization
 if __name__ == "__main__":
-    # Initialize system
-    auto_accept = JarvisAutoAcceptance()
+    import sys
     
-    # Example: Evaluate a file read request
-    request = {
-        "file_path": "/var/log/application.log",
-        "purpose": "error_analysis"
-    }
-    
-    approved, decision = auto_accept.evaluate_request(RequestType.FILE_READ, request)
-    print(f"Auto-approved: {approved}")
-    print(f"Reasoning: {decision.reasoning}")
+    if len(sys.argv) > 1 and sys.argv[1] == "--start-service":
+        # Initialize system as service
+        try:
+            auto_accept = JarvisAutoAcceptance()
+            print("[ACCEPT] Jarvis Auto-Acceptance System initialized successfully")
+            print(f"[ACCEPT] Database: {auto_accept.db_path}")
+            print(f"[ACCEPT] Confidence threshold: {auto_accept.confidence_threshold}")
+            sys.exit(0)
+        except Exception as e:
+            print(f"[ERROR] Failed to initialize auto-acceptance: {e}")
+            sys.exit(1)
+    else:
+        # Example usage
+        auto_accept = JarvisAutoAcceptance()
+        
+        # Example: Evaluate a file read request
+        request = {
+            "file_path": "/var/log/application.log",
+            "purpose": "error_analysis"
+        }
+        
+        approved, decision = auto_accept.evaluate_request(RequestType.FILE_READ, request)
+        print(f"Auto-approved: {approved}")
+        print(f"Reasoning: {decision.reasoning}")
     
     # Simulate outcome
     if approved:

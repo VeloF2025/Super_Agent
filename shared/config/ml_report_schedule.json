@@ -1,0 +1,48 @@
+{
+  "ml_report_updater": {
+    "enabled": true,
+    "schedule": {
+      "interval_hours": 6,
+      "start_time": "06:00",
+      "days_of_week": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    },
+    "update_triggers": [
+      {
+        "event": "pattern_milestone",
+        "threshold": 1000,
+        "description": "Update when 1000 new patterns learned"
+      },
+      {
+        "event": "agent_improvement",
+        "threshold": 5,
+        "description": "Update when 5% improvement in any agent metric"
+      },
+      {
+        "event": "system_milestone",
+        "threshold": "weekly",
+        "description": "Weekly comprehensive update"
+      }
+    ],
+    "metrics_sources": [
+      "enhanced_learning.db",
+      "auto_acceptance.db",
+      "jarvis_context.db",
+      "agent_heartbeats",
+      "decision_audit_trail.jsonl",
+      "performance_metrics.json"
+    ],
+    "report_sections": [
+      "system_wide_metrics",
+      "individual_agent_improvements",
+      "knowledge_transfer_matrix",
+      "pattern_learning_statistics",
+      "collaboration_effectiveness",
+      "future_predictions"
+    ],
+    "notification": {
+      "on_update": true,
+      "recipients": ["system_admin"],
+      "include_summary": true
+    }
+  }
+}

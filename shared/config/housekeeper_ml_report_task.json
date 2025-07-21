@@ -1,0 +1,53 @@
+{
+  "task_name": "ML Report Update",
+  "agent": "agent-housekeeper",
+  "schedule": {
+    "type": "recurring",
+    "interval": "6 hours",
+    "start_time": "06:00",
+    "enabled": true
+  },
+  "action": {
+    "type": "python_script",
+    "script": "shared/tools/ml_report_updater.py",
+    "arguments": ["--once"],
+    "working_directory": "C:\\Jarvis\\AI Workspace\\Super Agent"
+  },
+  "triggers": [
+    {
+      "type": "metric_threshold",
+      "metric": "learned_patterns_count",
+      "threshold": 1000,
+      "comparison": "increase_by"
+    },
+    {
+      "type": "time_based",
+      "every": "6 hours"
+    },
+    {
+      "type": "event",
+      "event": "major_improvement_detected"
+    }
+  ],
+  "notifications": {
+    "on_success": {
+      "log": true,
+      "message": "ML Report updated successfully with latest metrics"
+    },
+    "on_failure": {
+      "log": true,
+      "alert": true,
+      "message": "ML Report update failed - manual intervention may be required"
+    }
+  },
+  "metadata": {
+    "created": "2025-07-21T15:12:30",
+    "description": "Automatically updates the Agent ML & Context Improvements Report with latest metrics and achievements",
+    "priority": "medium",
+    "dependencies": [
+      "enhanced_learning.db",
+      "auto_acceptance.db",
+      "heartbeat_files"
+    ]
+  }
+}

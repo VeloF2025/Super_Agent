@@ -208,7 +208,27 @@ class MultiAgentInitializer:
         print(f"\n[REPORT] Initialization report: {report_file}")
         print("\n[ROCKET] JARVIS SUPER AGENT SYSTEM READY FOR OPERATIONS")
         
-        return report
+        # Initialize auto-acceptance system
+        self._initialize_auto_acceptance()
+        
+    def _initialize_auto_acceptance(self):
+        """Initialize the auto-acceptance system"""
+        try:
+            auto_accept_path = self.base_path / "memory" / "context" / "jarvis" / "jarvis_auto_acceptance.py"
+            if auto_accept_path.exists():
+                import subprocess
+                result = subprocess.run([
+                    "python", str(auto_accept_path), "--start-service"
+                ], capture_output=True, text=True, cwd=str(auto_accept_path.parent))
+                
+                if result.returncode == 0:
+                    print("[ACCEPT] Auto-acceptance system initialized successfully")
+                else:
+                    print(f"[WARNING] Auto-acceptance initialization issues: {result.stderr}")
+            else:
+                print("[WARNING] Auto-acceptance system not found")
+        except Exception as e:
+            print(f"[ERROR] Failed to initialize auto-acceptance: {e}")
 
 def main():
     """Main initialization function"""

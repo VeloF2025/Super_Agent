@@ -40,6 +40,12 @@ When `@Jarvis` is triggered, the system automatically:
    - Identify deployment blockers
    - Validate inter-agent communication
 
+5. **ML & CONTEXT REPORT UPDATE**
+   - Run: `python shared/tools/ml_report_updater.py --once`
+   - Updates agent performance metrics
+   - Tracks ML improvements and context retention
+   - Automatically runs with housekeeping agent every 6 hours
+
 ### **KNOWN CRITICAL ISSUES**
 
 From recent diagnostic reports:

@@ -314,6 +314,9 @@ class HousekeeperAgent:
                     # Update organization patterns
                     self._update_organization_patterns()
                     
+                    # Update ML & Context Improvements Report
+                    self._update_ml_report()
+                    
                     # Sleep for 6 hours
                     time.sleep(6 * 3600)
                     
@@ -450,6 +453,31 @@ class HousekeeperAgent:
         # This would analyze successful organization operations
         # and update patterns for improved future classification
         pass
+    
+    def _update_ml_report(self):
+        """Update ML & Context Improvements Report"""
+        try:
+            logger.info("Updating ML & Context Improvements Report")
+            
+            # Import and run the ML report updater
+            import subprocess
+            import sys
+            
+            # Run the updater script
+            result = subprocess.run(
+                [sys.executable, str(self.project_root / "shared" / "tools" / "ml_report_updater.py"), "--once"],
+                capture_output=True,
+                text=True,
+                cwd=str(self.project_root)
+            )
+            
+            if result.returncode == 0:
+                logger.info("ML Report updated successfully")
+            else:
+                logger.error(f"ML Report update failed: {result.stderr}")
+                
+        except Exception as e:
+            logger.error(f"Error updating ML report: {e}")
     
     def _format_bytes(self, bytes_value: int) -> str:
         """Format bytes value for human readability"""
