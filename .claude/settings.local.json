@@ -9,7 +9,10 @@
       "Bash(done)",
       "Bash(for agent in architect debugger optimizer innovation)",
       "Bash(mv:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(powershell:*)",
+      "Bash(npm start)",
+      "Bash(npm run dev:*)"
     ],
     "deny": []
   }

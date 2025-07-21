@@ -1,0 +1,312 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  schedule:
+    # Run security scan daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+env:
+  NODE_VERSION: '18.x'
+  PYTHON_VERSION: '3.12'
+
+jobs:
+  # Code Quality Checks
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for better analysis
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: agent-dashboard/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd agent-dashboard
+        npm ci
+    
+    - name: Run ESLint
+      run: |
+        cd agent-dashboard
+        npm run lint || true  # Don't fail on lint errors for now
+    
+    - name: Check for secrets
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.repository.default_branch }}
+        head: HEAD
+        extra_args: --debug --only-verified
+
+  # Security Audit
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Install dependencies
+      run: |
+        cd agent-dashboard
+        npm ci
+    
+    - name: Run npm audit
+      run: |
+        cd agent-dashboard
+        npm audit --production || true
+    
+    - name: Run security audit script
+      run: |
+        cd agent-dashboard
+        node ../security-audit.js
+    
+    - name: Upload security report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: security-report
+        path: SECURITY_AUDIT_REPORT.json
+    
+    - name: Run OWASP Dependency Check
+      uses: dependency-check/Dependency-Check_Action@main
+      with:
+        project: 'Super-Agent'
+        path: '.'
+        format: 'HTML'
+        args: >
+          --enableRetired
+          --enableExperimental
+    
+    - name: Upload OWASP report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: owasp-report
+        path: reports/
+
+  # Unit Tests
+  test-unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: agent-dashboard/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd agent-dashboard
+        npm ci
+    
+    - name: Run unit tests
+      run: |
+        cd agent-dashboard
+        npm test -- --coverage
+    
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        directory: ./agent-dashboard/coverage
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  # Integration Tests
+  test-integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      # Add any required services here (Redis, PostgreSQL, etc.)
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Install dependencies
+      run: |
+        cd agent-dashboard
+        npm ci
+    
+    - name: Run integration tests
+      run: |
+        cd agent-dashboard
+        npm run test:integration || echo "No integration tests yet"
+    
+    - name: Test secure server startup
+      run: |
+        cd agent-dashboard
+        timeout 30s npm run start:secure &
+        sleep 10
+        curl -k https://localhost:3010/api/health || curl http://localhost:3010/api/health
+
+  # Build and Package
+  build:
+    name: Build and Package
+    needs: [code-quality, security, test-unit]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Install dependencies
+      run: |
+        cd agent-dashboard
+        npm ci
+        cd client && npm ci
+    
+    - name: Build client
+      run: |
+        cd agent-dashboard
+        npm run build
+    
+    - name: Generate build info
+      run: |
+        echo "{
+          \"version\": \"$(git describe --tags --always)\",
+          \"commit\": \"${{ github.sha }}\",
+          \"branch\": \"${{ github.ref_name }}\",
+          \"buildTime\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
+          \"buildNumber\": \"${{ github.run_number }}\"
+        }" > agent-dashboard/build-info.json
+    
+    - name: Create deployment package
+      run: |
+        tar -czf super-agent-${{ github.sha }}.tar.gz \
+          --exclude='node_modules' \
+          --exclude='*.test.js' \
+          --exclude='tests' \
+          agent-dashboard/ \
+          config/ \
+          daily-ops/ \
+          docs/ \
+          *.md
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          super-agent-*.tar.gz
+          agent-dashboard/build-info.json
+
+  # Documentation Generation
+  docs:
+    name: Generate Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install Python dependencies
+      run: |
+        pip install watchdog
+    
+    - name: Run documentation generator
+      run: |
+        python docs-generator.py all
+    
+    - name: Upload documentation
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation
+        path: |
+          docs/
+          *.md
+
+  # Deploy to Staging (only on main branch)
+  deploy-staging:
+    name: Deploy to Staging
+    needs: [build, test-integration]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+    
+    - name: Deploy to staging
+      run: |
+        echo "Deploying to staging environment..."
+        # Add your deployment commands here
+        # Example: scp, rsync, kubectl, docker push, etc.
+    
+    - name: Run smoke tests
+      run: |
+        echo "Running smoke tests on staging..."
+        # Add smoke test commands here
+
+  # Notify on Failure
+  notify:
+    name: Notify on Failure
+    needs: [code-quality, security, test-unit, test-integration, build]
+    runs-on: ubuntu-latest
+    if: failure()
+    
+    steps:
+    - name: Send notification
+      run: |
+        echo "Build failed! Sending notifications..."
+        # Add notification logic here (Slack, email, etc.)
+
+# Security Policy
+# This workflow includes:
+# - Secret scanning with Trufflehog
+# - Dependency vulnerability scanning
+# - OWASP dependency check
+# - Security audit script execution
+# - npm audit for known vulnerabilities

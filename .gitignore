@@ -100,3 +100,22 @@ agent-workspace/**/build/
 *.db
 *.sqlite
 *.sqlite3
+
+# Admin credentials file (auto-generated)
+ADMIN_CREDENTIALS.txt
+
+# Security audit reports
+SECURITY_AUDIT_REPORT.json
+security-audit.js
+diagnostics-report/
+
+# SSL certificates (dev only)
+certs/
+
+# Environment files
+.env
+.env.*
+
+# Temporary diagnostic files
+temp.txt
+temp_*.txt

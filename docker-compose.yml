@@ -1,0 +1,149 @@
+version: '3.8'
+
+services:
+  # API Service
+  jarvis-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: jarvis-api
+    ports:
+      - "${API_PORT:-8000}:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - DATABASE_PATH=/app/data/jarvis.db
+      - CONTEXT_DB_PATH=/app/memory/context/jarvis/jarvis_context.db
+      - ENABLE_ML_OPTIMIZATION=true
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./data:/app/data
+      - ./memory:/app/memory
+      - ./projects:/app/projects
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Dashboard Service
+  jarvis-dashboard:
+    build:
+      context: ./agent-dashboard
+      dockerfile: Dockerfile
+    container_name: jarvis-dashboard
+    ports:
+      - "${DASHBOARD_PORT:-3000}:3000"
+    environment:
+      - REACT_APP_API_URL=http://jarvis-api:8000
+      - REACT_APP_WS_URL=ws://jarvis-api:8000
+    depends_on:
+      - jarvis-api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ML Optimization Service
+  jarvis-ml:
+    build:
+      context: .
+      dockerfile: Dockerfile.ml
+    container_name: jarvis-ml
+    environment:
+      - DATABASE_PATH=/app/data/jarvis.db
+      - CONTEXT_DB_PATH=/app/memory/context/jarvis/jarvis_context.db
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./data:/app/data
+      - ./memory:/app/memory
+      - ./models:/app/models
+    depends_on:
+      - redis
+      - jarvis-api
+    restart: unless-stopped
+
+  # Agent Workers
+  jarvis-agents:
+    build:
+      context: .
+      dockerfile: Dockerfile.agents
+    container_name: jarvis-agents
+    environment:
+      - API_URL=http://jarvis-api:8000
+      - AGENT_COUNT=${AGENT_COUNT:-5}
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./shared:/app/shared
+      - ./logs:/app/logs
+    depends_on:
+      - jarvis-api
+      - redis
+    restart: unless-stopped
+    deploy:
+      replicas: ${AGENT_COUNT:-5}
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: jarvis-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # PostgreSQL Database (optional, for production)
+  postgres:
+    image: postgres:15-alpine
+    container_name: jarvis-postgres
+    environment:
+      - POSTGRES_DB=jarvis
+      - POSTGRES_USER=jarvis
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-jarvis123}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jarvis"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: jarvis-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - jarvis-api
+      - jarvis-dashboard
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  postgres-data:
+
+networks:
+  default:
+    name: jarvis-network

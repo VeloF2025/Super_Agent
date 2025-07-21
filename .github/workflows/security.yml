@@ -1,0 +1,249 @@
+name: Security Scanning
+
+on:
+  schedule:
+    # Run at 3 AM UTC every day
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**/*.js'
+      - '**/*.ts'
+      - '**/*.json'
+      - '**/*.yml'
+      - '**/*.yaml'
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  # CodeQL Analysis
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript', 'python' ]
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        queries: security-and-quality
+    
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+    
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{ matrix.language }}"
+
+  # Container Scanning (if using Docker)
+  container-scan:
+    name: Container Security Scan
+    runs-on: ubuntu-latest
+    if: false  # Enable when Docker is added
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'super-agent:latest'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+    
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  # Dependency Review
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v4
+      with:
+        fail-on-severity: moderate
+        deny-licenses: GPL-3.0, AGPL-3.0
+        vulnerability-check: true
+        license-check: true
+
+  # SAST with Semgrep
+  semgrep:
+    name: Semgrep SAST
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run Semgrep
+      uses: returntocorp/semgrep-action@v1
+      with:
+        config: >-
+          p/security-audit
+          p/javascript
+          p/typescript
+          p/nodejs
+          p/expressjs
+          p/owasp-top-ten
+          p/secrets
+        generateSarif: true
+    
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: semgrep.sarif
+      if: always()
+
+  # License Compliance
+  license-check:
+    name: License Compliance Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+    
+    - name: Install license checker
+      run: npm install -g license-checker
+    
+    - name: Check licenses
+      run: |
+        cd agent-dashboard
+        license-checker --production --summary --failOn "GPL-3.0;AGPL-3.0;LGPL-3.0"
+
+  # Security Scorecard
+  scorecard:
+    name: Security Scorecard
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      id-token: write
+      contents: read
+      actions: read
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    
+    - name: Run analysis
+      uses: ossf/scorecard-action@v2.3.1
+      with:
+        results_file: results.sarif
+        results_format: sarif
+        publish_results: true
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: SARIF file
+        path: results.sarif
+        retention-days: 5
+    
+    - name: Upload SARIF results
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: results.sarif
+
+  # Custom Security Checks
+  custom-security:
+    name: Custom Security Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+    
+    - name: Check for hardcoded secrets
+      run: |
+        # Check for potential API keys, passwords, etc.
+        echo "Checking for hardcoded secrets..."
+        
+        # Patterns to search for
+        patterns=(
+          "api[_-]?key.*=.*['\"][a-zA-Z0-9]{20,}['\"]"
+          "secret.*=.*['\"][a-zA-Z0-9]{20,}['\"]"
+          "password.*=.*['\"][^'\"]+['\"]"
+          "token.*=.*['\"][a-zA-Z0-9]{20,}['\"]"
+        )
+        
+        found=0
+        for pattern in "${patterns[@]}"; do
+          if grep -r -E "$pattern" --include="*.js" --include="*.ts" --include="*.json" --exclude-dir=node_modules --exclude-dir=.git .; then
+            echo "⚠️  Found potential secret with pattern: $pattern"
+            found=1
+          fi
+        done
+        
+        if [ $found -eq 1 ]; then
+          echo "❌ Potential secrets found! Please review and use environment variables instead."
+          exit 1
+        else
+          echo "✅ No hardcoded secrets detected"
+        fi
+    
+    - name: Check for vulnerable configurations
+      run: |
+        echo "Checking for vulnerable configurations..."
+        
+        # Check for dangerous Express settings
+        if grep -r "trust proxy.*true" --include="*.js" --exclude-dir=node_modules .; then
+          echo "⚠️  'trust proxy' is enabled - ensure this is intentional"
+        fi
+        
+        # Check for CORS wildcards
+        if grep -r "origin.*\\*" --include="*.js" --exclude-dir=node_modules .; then
+          echo "⚠️  CORS wildcard origin detected - consider restricting origins"
+        fi
+        
+        echo "✅ Configuration check complete"
+
+  # Security Report Summary
+  security-summary:
+    name: Security Summary
+    needs: [codeql, semgrep, license-check, custom-security]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Generate security summary
+      run: |
+        echo "## 🔒 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| CodeQL | ${{ needs.codeql.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Semgrep | ${{ needs.semgrep.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| License Check | ${{ needs.license-check.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Custom Security | ${{ needs.custom-security.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Security scanning complete" >> $GITHUB_STEP_SUMMARY

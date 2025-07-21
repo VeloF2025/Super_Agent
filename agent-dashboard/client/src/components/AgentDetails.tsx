@@ -1,15 +1,17 @@
 import { motion } from 'framer-motion'
-import { Agent, Activity } from '../types'
+import { Agent, Activity, AgentPerformance } from '../types'
 import { Bot, Cpu, Clock, CheckCircle, AlertCircle, TrendingUp } from 'lucide-react'
 import ActivityFeed from './ActivityFeed'
+import AgentHealthScore from './AgentHealthScore'
 import clsx from 'clsx'
 
 interface AgentDetailsProps {
   agent: Agent
   activities: Activity[]
+  performance?: AgentPerformance
 }
 
-export default function AgentDetails({ agent, activities }: AgentDetailsProps) {
+export default function AgentDetails({ agent, activities, performance }: AgentDetailsProps) {
   const agentActivities = activities.filter(a => a.agent_id === agent.id)
   const completedActivities = agentActivities.filter(a => a.status === 'completed')
   const successRate = completedActivities.length > 0
@@ -133,6 +135,13 @@ export default function AgentDetails({ agent, activities }: AgentDetailsProps) {
           </div>
         )}
       </motion.div>
+
+      {/* Health Score */}
+      <AgentHealthScore 
+        agent={agent} 
+        performance={performance}
+        activities={activities}
+      />
 
       {/* Recent Activities */}
       <motion.div

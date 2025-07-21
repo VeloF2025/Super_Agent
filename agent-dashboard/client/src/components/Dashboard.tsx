@@ -6,6 +6,7 @@ import { DashboardData } from '../types'
 import MetricCard from './MetricCard'
 import ActivityFeed from './ActivityFeed'
 import ProjectFilter from './ProjectFilter'
+import ActivityTimeline from './ActivityTimeline'
 
 interface DashboardProps {
   data: DashboardData | null
@@ -13,6 +14,7 @@ interface DashboardProps {
 
 export default function Dashboard({ data }: DashboardProps) {
   const [selectedProject, setSelectedProject] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<'feed' | 'timeline'>('feed')
   
   if (!data) return (
     <div className="flex items-center justify-center h-64">
@@ -180,8 +182,41 @@ export default function Dashboard({ data }: DashboardProps) {
         transition={{ delay: 0.3 }}
         className="bg-gray-900/50 backdrop-blur-md rounded-xl border border-gray-800 p-6"
       >
-        <h3 className="text-lg font-semibold text-gray-200 mb-4">Recent Activities</h3>
-        <ActivityFeed activities={activities.slice(0, 10)} />
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-200">Recent Activities</h3>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setViewMode('feed')}
+              className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                viewMode === 'feed' 
+                  ? 'bg-neon-blue/20 text-neon-blue border border-neon-blue/30' 
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              Feed
+            </button>
+            <button
+              onClick={() => setViewMode('timeline')}
+              className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                viewMode === 'timeline' 
+                  ? 'bg-neon-blue/20 text-neon-blue border border-neon-blue/30' 
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              Timeline
+            </button>
+          </div>
+        </div>
+        
+        {viewMode === 'feed' ? (
+          <ActivityFeed activities={activities.slice(0, 10)} />
+        ) : (
+          <ActivityTimeline 
+            activities={activities} 
+            agents={filteredAgents}
+            showAgentFilter={!selectedProject}
+          />
+        )}
       </motion.div>
     </div>
   )

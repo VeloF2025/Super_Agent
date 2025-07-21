@@ -189,7 +189,9 @@ export class FileSystemWatcher extends EventEmitter {
             const content = await fs.readFile(filePath, 'utf-8');
             const data = JSON.parse(content);
             
-            const relativePath = path.relative(projectsPath, filePath);
+            const relativePath = filePath.includes('Super Agent') 
+              ? path.relative(path.join(this.superAgentPath, 'projects'), filePath)
+              : path.relative(this.workspacePath, filePath);
             const parts = relativePath.split(path.sep);
             const projectName = parts[0];
             

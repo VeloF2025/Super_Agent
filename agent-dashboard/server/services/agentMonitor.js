@@ -39,15 +39,42 @@ export class AgentMonitor extends EventEmitter {
 
   async checkRunningProcesses() {
     try {
-      // Get list of running Node.js processes
-      const { stdout } = await execPromise('wmic process where "name=\'node.exe\'" get ProcessId,CommandLine /format:list');
+      // Use cross-platform approach to check for running processes
+      let stdout = '';
+      
+      if (process.platform === 'win32') {
+        try {
+          // Try PowerShell first (more reliable than wmic)
+          const psCommand = 'Get-Process node -ErrorAction SilentlyContinue | Select-Object Id,ProcessName,CommandLine | ConvertTo-Json';
+          const { stdout: psOutput } = await execPromise(`powershell -Command "${psCommand}"`);
+          stdout = psOutput;
+        } catch (psError) {
+          try {
+            // Fallback to tasklist for Windows
+            const { stdout: taskOutput } = await execPromise('tasklist /fi "imagename eq node.exe" /fo csv');
+            stdout = taskOutput;
+          } catch (taskError) {
+            console.warn('Could not check running processes on Windows:', taskError.message);
+            await this.checkRecentLogActivity();
+            return;
+          }
+        }
+      } else {
+        try {
+          // For Linux/macOS, use ps command
+          const { stdout: psOutput } = await execPromise('ps aux | grep node');
+          stdout = psOutput;
+        } catch (psError) {
+          console.warn('Could not check running processes on Unix:', psError.message);
+          await this.checkRecentLogActivity();
+          return;
+        }
+      }
       
       // Parse the output to find agent processes
-      const processes = stdout.split('\n\n').filter(p => p.trim());
+      const processes = stdout.split('\n').filter(p => p.trim());
       
       for (const process of processes) {
-        const commandLine = process.match(/CommandLine=(.*)/)?.[1] || '';
-        
         // Check if this is an agent process
         for (const [agentId, agent] of this.agents) {
           // Check various patterns that might indicate this agent is running
@@ -58,7 +85,7 @@ export class AgentMonitor extends EventEmitter {
             path.basename(agent.path || '')
           ];
           
-          if (patterns.some(pattern => pattern && commandLine.toLowerCase().includes(pattern.toLowerCase()))) {
+          if (patterns.some(pattern => pattern && process.toLowerCase().includes(pattern.toLowerCase()))) {
             console.log(`Detected running process for agent: ${agent.name}`);
             this.updateAgentStatus(agentId, 'active');
             break;

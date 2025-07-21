@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
-import { LayoutDashboard, Bot, MessageSquare, FolderOpen, ChevronRight } from 'lucide-react'
+import { LayoutDashboard, Bot, MessageSquare, FolderOpen, ChevronRight, Brain } from 'lucide-react'
 import { Agent } from '../types'
 import clsx from 'clsx'
 
 interface SidebarProps {
   selectedView: string
-  onViewChange: (view: 'dashboard' | 'agents' | 'communications' | 'projects') => void
+  onViewChange: (view: 'dashboard' | 'agents' | 'communications' | 'projects' | 'ml-optimization') => void
   agents: Agent[]
   onAgentSelect: (agent: Agent) => void
 }
@@ -16,6 +16,7 @@ export default function Sidebar({ selectedView, onViewChange, agents, onAgentSel
     { id: 'agents', label: 'Agents', icon: Bot },
     { id: 'communications', label: 'Communications', icon: MessageSquare },
     { id: 'projects', label: 'Projects', icon: FolderOpen },
+    { id: 'ml-optimization', label: 'ML Optimization', icon: Brain },
   ]
 
   const getStatusColor = (status: string) => {
